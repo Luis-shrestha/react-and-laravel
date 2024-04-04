@@ -15,15 +15,20 @@ class StudentController extends Controller
                 throw new \Exception('No image file found in request.');
             }
 
-            // Get file data
-            $imageData = file_get_contents($request->file('image_data')->getRealPath());
+           $request->validate([
+            'image_data' => 'required|image|mimes:jpeg,png,jpg,gif', // Example validation for image upload
+            ]);
+
+            // Get the file path
+            $imagePath = $request->file('image_data')->store('images'); // Store the file in the 'images' directory
+
 
             // Create new Student instance
             $student = new Student();
             $student->fullname = $request->input('fullname');
             $student->email = $request->input('email');
             $student->address = $request->input('address');
-            $student->image_data = $imageData;
+            $student->image_data = $imagePath;
             $student->save();
 
             return response()->json([
@@ -32,7 +37,7 @@ class StudentController extends Controller
             ]);
         } catch (\Exception $e) {
             // Log error
-            \Log::error('Error storing student: ' . $e->getMessage());
+            \Log::error('Error storing student details: ' . $e->getMessage());
 
             // Return error response
             return response()->json([
@@ -47,6 +52,15 @@ class StudentController extends Controller
         return response()->json([
             'status' => 200,
             'student' => $student,
+        ]);
+    }
+
+    public function delete($id){
+        $student = Student::find($id);
+        $student->delete();
+        return response()->json([
+            'status' => 200,
+            'message' => 'student data delete successfully',
         ]);
     }
 

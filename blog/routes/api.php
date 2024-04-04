@@ -42,3 +42,4 @@ Route::delete('/deleteuser/{id}', [UserController::class, 'delete']);
 
 Route::post('/addstudents', [StudentController::class, 'store']);
 Route::get('/showstudents', [StudentController::class, 'showstudents']);
+Route::delete('/deletestudent/{id}', [StudentController::class, 'delete']);
