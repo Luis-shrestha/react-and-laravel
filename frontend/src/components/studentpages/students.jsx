@@ -1,54 +1,92 @@
 import { Component } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import "/helllo/example3/test2/frontend/src/assets/css/style.css";
 
 class Students extends Component {
   state = {
-    user: [],
+    students: [],
     loading: true,
   };
+
   async componentDidMount() {
-    const response = await axios.get("http://127.0.0.1:8000/api/showstudents");
-    if (response.data.status === 200) {
-      this.setState({
-        student: response.data.student,
-        loading: false,
-      });
+    try {
+      const response = await axios.get(
+        "http://127.0.0.1:8000/api/showstudents"
+      );
+      if (response.data.status === 200) {
+        this.setState({
+          students: response.data.student,
+          loading: false,
+        });
+      }
+    } catch (error) {
+      console.error("Error fetching students:", error);
     }
   }
+  deleteUser = async (e, id) => {
+    const clicked = e.currentTarget;
+    clicked.innerText = "deleting";
+    const res = await axios.delete(
+      `http://127.0.0.1:8000/api/deletestudent/${id}`
+    );
+    if (res.data.status === 200) {
+      clicked.closest("tr").remove();
+      console.log(res.data.message);
+    }
+  };
 
   render() {
-    var student_table = "";
-    if (this.state.loading) {
-      student_table = (
+    const { students, loading } = this.state;
+
+    let studentTable;
+
+    if (loading) {
+      studentTable = (
         <tr>
           <td colSpan="6">
             <h3>Loading</h3>
           </td>
         </tr>
       );
+    } else if (students.length === 0) {
+      studentTable = (
+        <tr>
+          <td colSpan="6">
+            <h3>No data are stored</h3>
+          </td>
+        </tr>
+      );
     } else {
-      student_table = this.state.user.map((items) => {
-        return (
-          <tr key={items.id}>
-            <td>{items.id}</td>
-            <td>{items.fullname}</td>
-            <td>{items.email}</td>
-            <td>{items.address}</td>
-            <td>{items.iamge_data}</td>
-            <td>
-              <Link to="" className="btn btn-success btn-sm">
-                Edit
-              </Link>
-
-              <button type="button" className="btn btn-danger btn-sm">
-                Delete
-              </button>
-            </td>
-          </tr>
-        );
-      });
+      studentTable = students.map((student) => (
+        <tr key={student.id}>
+          <td>{student.id}</td>
+          <td>{student.fullname}</td>
+          <td>{student.email}</td>
+          <td>{student.address}</td>
+          <td>
+            <img
+              src={`http://127.0.0.1:8000/images/${student.image_data}`}
+              alt={`Image of ${student.fullname}`}
+              height="100"
+            />
+          </td>
+          <td>
+            <Link to="" className="btn btn-success btn-sm">
+              Edit
+            </Link>
+            <button
+              type="button"
+              className="btn btn-danger btn-sm"
+              onClick={(e) => this.deleteUser(e, student.id)}
+            >
+              Delete
+            </button>
+          </td>
+        </tr>
+      ));
     }
+
     return (
       <div className="container">
         <div className="row">
@@ -56,7 +94,7 @@ class Students extends Component {
             <div className="card">
               <div className="card-header">
                 <h4>
-                  Users data
+                  Students details
                   <Link to={"addstudents"}>
                     <button className="btn btn-primary btn-sm float-end">
                       Add Students
@@ -72,11 +110,11 @@ class Students extends Component {
                       <td>fullname</td>
                       <td>email</td>
                       <td>address</td>
-                      <td>image_data</td>
-                      <td>operations</td>
+                      <td>Image</td>
+                      <td>Operations</td>
                     </tr>
                   </thead>
-                  <tbody>{student_table}</tbody>
+                  <tbody>{studentTable}</tbody>
                 </table>
               </div>
             </div>

@@ -20,7 +20,7 @@ class StudentController extends Controller
             ]);
 
             // Get the file path
-            $imagePath = $request->file('image_data')->store('images'); // Store the file in the 'images' directory
+            $imagePath = $request->file('image_data')->storeAs('public/images', $request->file('image_data')->getClientOriginalName());
 
 
             // Create new Student instance
@@ -33,6 +33,7 @@ class StudentController extends Controller
 
             return response()->json([
                 'status' => 200,
+                'image_path' => asset('storage/images/' . $request->file('image_data')->getClientOriginalName()),
                 'message' => 'Student added successfully',
             ]);
         } catch (\Exception $e) {

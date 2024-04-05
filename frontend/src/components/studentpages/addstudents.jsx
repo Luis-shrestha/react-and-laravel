@@ -11,18 +11,11 @@ const AddStudents = () => {
   });
 
   const handleInput = (e) => {
-    if (e.target.name === "image_data") {
-      // Handle file input separately
-      setState({
-        ...state,
-        [e.target.name]: e.target.files[0], // Store file object
-      });
-    } else {
-      setState({
-        ...state,
-        [e.target.name]: e.target.value,
-      });
-    }
+    const { name, value, files } = e.target; // Destructure name, value, and files from event target
+    setState((prevState) => ({
+      ...prevState,
+      [name]: files ? files[0] : value, // If files exist, set file object; otherwise, set value
+    }));
   };
 
   const saveStudents = async (e) => {
