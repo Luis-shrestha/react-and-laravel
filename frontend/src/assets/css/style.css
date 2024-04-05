@@ -1,4 +1,40 @@
+.container-body {
+  height: auto;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.students-details {
+  width: 350px;
+  height: 400px;
+  text-align: center;
+  box-shadow: 1px 1px 1px black;
+  overflow: hidden;
+  margin: 15px 0;
+}
 img {
-  height: 100px;
-  width: 100px;
+  height: 100%;
+  width: 100%;
+  transition: all 0.2s ease;
+}
+.students-details p {
+  opacity: 0;
+  padding: 0;
+  margin: 0;
+  position: relative;
+  top: 90%;
+  transition: all 0.2s ease;
+  background-color: rgba(101, 0, 0, 0.181);
+  height: 23px;
+}
+
+.students-details:hover p {
+  opacity: 1;
+  position: relative;
+  z-index: 2;
+  top: 76%;
+}
+.students-details:hover img {
+  transform: scale(1.1);
 }

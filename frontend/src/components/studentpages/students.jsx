@@ -59,31 +59,42 @@ class Students extends Component {
       );
     } else {
       studentTable = students.map((student) => (
-        <tr key={student.id}>
-          <td>{student.id}</td>
-          <td>{student.fullname}</td>
-          <td>{student.email}</td>
-          <td>{student.address}</td>
-          <td>
-            <img
-              src={`http://127.0.0.1:8000/images/${student.image_data}`}
-              alt={`Image of ${student.fullname}`}
-              height="100"
-            />
-          </td>
-          <td>
-            <Link to="" className="btn btn-success btn-sm">
-              Edit
-            </Link>
-            <button
-              type="button"
-              className="btn btn-danger btn-sm"
-              onClick={(e) => this.deleteUser(e, student.id)}
-            >
-              Delete
-            </button>
-          </td>
-        </tr>
+        // <tr key={student.id}>
+        //   <td>{student.id}</td>
+        //   <td>{student.fullname}</td>
+        //   <td>{student.email}</td>
+        //   <td>{student.address}</td>
+        //   <td>
+        //     <img
+        //       src={`http://127.0.0.1:8000/images/${student.image_data}`}
+        //       // alt={`Image of ${student.fullname}`}
+        //       height="100"
+        //     />
+        //     {`image of ${student.fullname}`}
+        //   </td>
+        //   <td>
+        //     <Link to="" className="btn btn-success btn-sm">
+        //       Edit
+        //     </Link>
+        //     <button
+        //       type="button"
+        //       className="btn btn-danger btn-sm"
+        //       onClick={(e) => this.deleteUser(e, student.id)}
+        //     >
+        //       Delete
+        //     </button>
+        //   </td>
+        // </tr>
+        <div className="students-details" key={student.id}>
+          <img
+            src={`http://127.0.0.1:8000/images/${student.image_data}`}
+            alt={`Image of ${student.fullname}`}
+            height="100"
+          />
+          <p>{student.fullname}</p>
+          <p>{student.email}</p>
+          <p>{student.contact}</p>
+        </div>
       ));
     }
 
@@ -102,7 +113,7 @@ class Students extends Component {
                   </Link>
                 </h4>
               </div>
-              <div className="card-body">
+              {/* <div className="card-body">
                 <table className="table table-striped table-bordered">
                   <thead>
                     <tr>
@@ -116,7 +127,8 @@ class Students extends Component {
                   </thead>
                   <tbody>{studentTable}</tbody>
                 </table>
-              </div>
+              </div> */}
+              <div className="container-body">{studentTable}</div>
             </div>
           </div>
         </div>
